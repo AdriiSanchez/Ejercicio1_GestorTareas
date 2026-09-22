@@ -1,60 +1,62 @@
-public class Tarea {
-    //Atributos de la tarea
-    private String nombre;
-    private String descripcion;
-    private int id;
-    private boolean completada=false;
-    //Permite que puedan ir aumentando los ids
-    //Al ponerlo static significa que lo comparten todas las instancias
-    //Si no lo pongo el id siempre será 1
-    private static int contador=0;
+import java.util.Scanner;
 
-    //Constructor
-    //Aumentaré el valor del id cuando cree una nueva tarea
-    public Tarea(String nombre, String descripcion) {
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        id= contador++;
-    }
+class Interfaz {
+    public static void main(String[] args) {
+        //Sigo con el bucle
+        int opcion = 6;
+        Scanner sc = new Scanner(System.in);
+        GestorTareas gestorTareas = new GestorTareas();
+        String nombre, descripcion, prioridad; // AÑADIDA VARIABLE PRIORIDAD
+        int id;
 
-    //Getters y Setters
-    public String getNombre() {
-        return nombre;
-    }
+        do {
+            System.out.println("Elige la opción deseada");
+            System.out.println("0. Salir");
+            System.out.println("1. Añadir una tarea");
+            System.out.println("2. Ver tareas pendientes");
+            System.out.println("3. Marcar tarea como completada");
+            System.out.println("4. Eliminar tarea");
+            System.out.println("5. Filtrar por prioridad"); // NUEVA OPCIÓN
+            System.out.println("6. Guardar en archivo"); // NUEVA OPCIÓN
+            //Para evitar errores le hago casting
+            opcion = Integer.parseInt(sc.nextLine());
+            //Si la opción no es 0
+            if (opcion != 0) {
+                switch (opcion) {
+                    case 1 -> {
+                        System.out.println("Escribe el nombre del tarea");
+                        nombre = sc.nextLine();
+                        System.out.println("Escribe la descripción de la tarea");
+                        descripcion = sc.nextLine();
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+                        // NUEVO: Pedir prioridad
+                        System.out.println("Escribe la prioridad (alta, media, baja):");
+                        prioridad = sc.nextLine();
 
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public boolean isCompletada() {
-        return completada;
-    }
-
-    public void setCompletada(boolean completada) {
-        this.completada = completada;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    //ToString
-
-    @Override
-    public String toString() {
-        return "Tarea{" +
-                "nombre='" + nombre + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", id=" + id +
-                ", completada=" + completada +
-                '}';
+                        // MODIFICADO: Pasar 3 variables
+                        Tarea tarea = new Tarea(nombre, descripcion, prioridad);
+                        //Al gestor tareas le pido que me añada la tarea
+                        gestorTareas.anadirTarea(tarea);
+                    }
+                    case 2 -> gestorTareas.mostrarPendientes();
+                    case 3 -> {
+                        gestorTareas.ensenar();
+                        gestorTareas.marcar();
+                    }
+                    case 4 -> {
+                        gestorTareas.ensenar();
+                        gestorTareas.eliminar();
+                    }
+                    case 5 -> { // NUEVO CASO 5
+                        System.out.println("Introduce la prioridad a filtrar:");
+                        String filtro = sc.nextLine();
+                        gestorTareas.filtrarPorPrioridad(filtro);
+                    }
+                    case 6 -> { // NUEVO CASO 6
+                        gestorTareas.guardarTareasEnArchivo();
+                    }
+                }
+            }
+        } while (opcion != 0);
     }
 }

@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class GestorTareas {
     ArrayList<Tarea> tareas = new ArrayList();
@@ -46,7 +48,6 @@ public class GestorTareas {
         System.out.println("¿Qué tarea deseas eliminar? Escribe el ID: ");
         int id_tarea = Integer.parseInt(sc.nextLine());
         tareas.remove(tareas.get(id_tarea));
-
     }
 
     //Enseñar tareas
@@ -55,7 +56,39 @@ public class GestorTareas {
             System.out.println(tarea.toString());
         }
     }
+
+    // --- NUEVAS FUNCIONES ---
+
+    // Método para filtrar tareas por prioridad
+    public void filtrarPorPrioridad(String filtro) {
+        encontrada = false;
+        System.out.println("--- Tareas con prioridad: " + filtro + " ---");
+        for (Tarea tarea : tareas) {
+            if (tarea.getPrioridad() != null && tarea.getPrioridad().equalsIgnoreCase(filtro)) {
+                System.out.println(tarea.toString());
+                encontrada = true;
+            }
+        }
+        if (!encontrada) {
+            System.out.println("No se encontraron tareas con esa prioridad.");
+        }
+    }
+
+    // Método para guardar el listado en un archivo de texto
+    public void guardarTareasEnArchivo() {
+        try {
+            FileWriter writer = new FileWriter("tareas.txt");
+            for (Tarea tarea : tareas) {
+                writer.write(tarea.toString() + "\n");
+            }
+            writer.close();
+            System.out.println("¡Listado guardado correctamente en el archivo 'tareas.txt'!");
+        } catch (IOException e) {
+            System.out.println("Ha ocurrido un error al intentar guardar el archivo.");
+        }
+    }
 }
+
 
 
 

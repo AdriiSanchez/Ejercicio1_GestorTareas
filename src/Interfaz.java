@@ -1,48 +1,72 @@
-import java.util.Scanner;
+class Tarea {
+    //Atributos de la tarea
+    private String nombre;
+    private String descripcion;
+    private String prioridad; // NUEVO ATRIBUTO
+    private int id;
+    private boolean completada = false;
+    //Permite que puedan ir aumentando los ids
+    //Al ponerlo static significa que lo comparten todas las instancias
+    //Si no lo pongo el id siempre será 1
+    private static int contador = 0;
 
-public class Interfaz {
-    public static void main(String[] args) {
-        //Mientras que la opcion no sea = 0
-        //Sigo con el bucle
-        int opcion = 6;
-        Scanner sc = new Scanner(System.in);
-        GestorTareas gestorTareas = new GestorTareas();
-        String nombre, descripcion;
-        int id;
+    //Constructor
+    //Aumentaré el valor del id cuando cree una nueva tarea
+    public Tarea(String nombre, String descripcion, String prioridad) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.prioridad = prioridad; // NUEVO
+        id = contador++;
+    }
 
-        do {
-            System.out.println("Elige la opción deseada");
-            System.out.println("0. Salir");
-            System.out.println("1. Añadir una tarea");
-            System.out.println("2. Ver tareas pendientes");
-            System.out.println("3. Marcar tarea como completada");
-            System.out.println("4. Eliminar tarea");
-            //Para evitar errores le hago casting
-            opcion = Integer.parseInt(sc.nextLine());
-            //Si la opción no es 0
-            if (opcion != 0) {
-                switch (opcion) {
-                    case 1 -> {
-                        System.out.println("Escribe el nombre del tarea");
-                        nombre = sc.nextLine();
-                        System.out.println("Escribe la descripción de la tarea");
-                        descripcion = sc.nextLine();
-                        Tarea tarea = new Tarea(nombre, descripcion);
-                        //Al gestor tareas le pido que me añada la tarea
-                        gestorTareas.anadirTarea(tarea);
-                    }
-                    case 2 -> gestorTareas.mostrarPendientes();
-                    case 3 -> {
-                        gestorTareas.ensenar();
-                        gestorTareas.marcar();
-                    }
-                    case 4 -> {
-                        gestorTareas.ensenar();
-                        gestorTareas.eliminar();
-                    }
-                }
-            }
-        } while (opcion != 0);
+    //Getters y Setters
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getPrioridad() {
+        return prioridad;
+    } // NUEVO
+
+    public void setPrioridad(String prioridad) {
+        this.prioridad = prioridad;
+    } // NUEVO
+
+    public boolean isCompletada() {
+        return completada;
+    }
+
+    public void setCompletada(boolean completada) {
+        this.completada = completada;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    //ToString
+
+    @Override
+    public String toString() {
+        return "Tarea{" +
+                "nombre='" + nombre + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", prioridad='" + prioridad + '\'' + // NUEVO
+                ", id=" + id +
+                ", completada=" + completada +
+                '}';
     }
 }
 
